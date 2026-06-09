@@ -57,21 +57,19 @@ class MarketScanner:
             logger.error(f"Failed to fetch markets: {e}")
             return []
     
-    def get_market_prices(self, market: Market) -> Market:
+   def get_market_prices(self, market: Market) -> Market:
     """Fetch current YES/NO prices for a market from CLOB API."""
     for token in market.tokens:
         try:
-            # 🔧 YENİ: Token ID'yi doğru formata (hex) çevir
             hex_token_id = token.token_id
             if not hex_token_id.startswith('0x'):
                 hex_token_id = '0x' + hex_token_id
             
-            # 🔧 YENİ: Doğru URL ve parametrelerle istek yap
             response = self.session.get(
                 f"{self.clob_url}/price",
                 params={
                     "token_id": hex_token_id,
-                    "side": "BUY",  # API büyük harf bekler
+                    "side": "BUY",
                 },
                 timeout=5,
             )
